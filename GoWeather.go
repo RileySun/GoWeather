@@ -75,8 +75,12 @@ func GetCurrent(search string) *Response {
 	newResponse := new(Response)
 
 	lat, lon := geocodeMapsAPI(search)
-	newResponse.OMW = openWeatherMapAPI(lat, lon)
-	newResponse.WB = weatherBitAPI(lat, lon)
+	if config.OWM != "" {
+		newResponse.OMW = openWeatherMapAPI(lat, lon)
+	}
+	if config.WB != "" {
+		newResponse.WB = weatherBitAPI(lat, lon)
+	}
 	
 	return newResponse
 }
@@ -182,7 +186,7 @@ func weatherBitAPI(lat string, lon string) *Weather {
 	newWeather.Tempature = fmt.Sprintf("%v", weatherObj[0]["temp"])
 	newWeather.Humidity = fmt.Sprintf("%v", weatherObj[0]["rh"])
 	newWeather.Precipitation = fmt.Sprintf("%v", weatherObj[0]["precip"])
-	/*
+
 	
 	//Have to do this again cause need raw Json and not an interface
 	weatherData2 := data["data"]
@@ -198,7 +202,6 @@ func weatherBitAPI(lat string, lon string) *Weather {
 		log.Fatal(err)
 	}
 	newWeather.Description = fmt.Sprintf("%v", descObj["description"])
-	*/
 	
 	return newWeather
 }
