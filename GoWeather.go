@@ -46,7 +46,7 @@ var config ConfigData
 func init() {
 	getConfig()
 	//Check if	
-	if (config.OWM == "" && config.WB != "") {
+	if len(config.OWM) == 0 && len(config.WB) == 0 {
 		fmt.Println("Error, no API keys given")
 		os.Exit(0)
 	}
@@ -54,7 +54,8 @@ func init() {
 
 func main() {
 	response := GetCurrent("Berlin,DE")
-	fmt.Println(response)
+	fmt.Printf("Open Weather Map: %+v", response.OMW)
+	fmt.Printf("Weatherbit: %+v", response.WB)
 }
 
 //Util
@@ -72,13 +73,15 @@ func getConfig() {
 
 //Actions
 func GetCurrent(search string) *Response {
+	//Returns a Struct made of string identifiers and Weather Structs (non present API keys return nil)
+	
 	newResponse := new(Response)
 
 	lat, lon := geocodeMapsAPI(search)
-	if config.OWM != "" {
+	if len(config.OWM) != 0 {
 		newResponse.OMW = openWeatherMapAPI(lat, lon)
 	}
-	if config.WB != "" {
+	if len(config.WB) != 0 {
 		newResponse.WB = weatherBitAPI(lat, lon)
 	}
 	
