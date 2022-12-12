@@ -63,12 +63,12 @@ func getConfig() {
 	data, err := ioutil.ReadFile("./config.json")
 	if err != nil {
 		log.Fatal("Error when opening file: ", err)
-    }
+	}
 	
-    err = json.Unmarshal(data, &config)
-    if err != nil {
-        log.Fatal("Error during Unmarshal(): ", err)
-    }
+	err = json.Unmarshal(data, &config)
+	if err != nil {
+		log.Fatal("Error during Unmarshal(): ", err)
+	}
 }
 
 //Actions
@@ -93,28 +93,28 @@ func openWeatherMapAPI(lat string, lon string) *Weather {
 	//Generic GET request to Open Weather Map API
 	client := &http.Client{
 		Timeout: time.Second * 10,
-    }
-    
-    url := "https://api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" + lon + "&lang=" + config.Lang + "&units=" + config.UnitsOWM + "&APPID=" + config.OWM
-    
-    req, err := http.NewRequest("GET", url, nil)
-    
-    if err != nil {
+	}
+	
+	url := "https://api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" + lon + "&lang=" + config.Lang + "&units=" + config.UnitsOWM + "&APPID=" + config.OWM
+	
+	req, err := http.NewRequest("GET", url, nil)
+	
+	if err != nil {
 		log.Fatal(err)
 	}
 	
 	resp, err := client.Do(req)
 	
 	if err != nil {
-        log.Fatal(err)
-    }
-    
-    responseData, err := ioutil.ReadAll(resp.Body)
-    
-    if err != nil {
-        log.Fatal(err)
-    }
-    
+		log.Fatal(err)
+	}
+	
+	responseData, err := ioutil.ReadAll(resp.Body)
+	
+	if err != nil {
+		log.Fatal(err)
+	}
+	
 	defer resp.Body.Close()
 	
 	var data map[string]json.RawMessage 
@@ -148,28 +148,28 @@ func openWeatherMapAPI(lat string, lon string) *Weather {
 func weatherBitAPI(lat string, lon string) *Weather {
 	client := &http.Client{
 		Timeout: time.Second * 10,
-    }
-    
-    url := "http://api.weatherbit.io/v2.0/current?lang=" + config.Lang + "&units=" + config.UnitsWB + "&lon=" + lon + "&lat=" + lat + "&include=minutely&key=" + config.WB
-    
-    req, err := http.NewRequest("GET", url, nil)
-    
-    if err != nil {
+	}
+	
+	url := "http://api.weatherbit.io/v2.0/current?lang=" + config.Lang + "&units=" + config.UnitsWB + "&lon=" + lon + "&lat=" + lat + "&include=minutely&key=" + config.WB
+	
+	req, err := http.NewRequest("GET", url, nil)
+	
+	if err != nil {
 		log.Fatal(err)
 	}
 	
 	resp, err := client.Do(req)
 	
 	if err != nil {
-        log.Fatal(err)
-    }
-    
-    responseData, err := ioutil.ReadAll(resp.Body)
-    
-    if err != nil {
-        log.Fatal(err)
-    }
-    
+		log.Fatal(err)
+	}
+	
+	responseData, err := ioutil.ReadAll(resp.Body)
+	
+	if err != nil {
+		log.Fatal(err)
+	}
+	
 	defer resp.Body.Close()
 	
 	var data map[string]json.RawMessage 
@@ -213,29 +213,29 @@ func geocodeMapsAPI(search string) (string, string) {
 	//Generic GET request to Open Weather Map API
 	client := &http.Client{
 		Timeout: time.Second * 10,
-    }
-    
-    query := url.QueryEscape(search)
-    url := "https://geocode.maps.co/search?q=" + query
-        
-    req, err := http.NewRequest("GET", url, nil)
-    
-    if err != nil {
+	}
+	
+	query := url.QueryEscape(search)
+	url := "https://geocode.maps.co/search?q=" + query
+		
+	req, err := http.NewRequest("GET", url, nil)
+	
+	if err != nil {
 		log.Fatal(err)
 	}
 	
 	resp, err := client.Do(req)
 	
 	if err != nil {
-        log.Fatal(err)
-    }
-    
-    responseData, err := ioutil.ReadAll(resp.Body)
-    
-    if err != nil {
-        log.Fatal(err)
-    }
-    
+		log.Fatal(err)
+	}
+	
+	responseData, err := ioutil.ReadAll(resp.Body)
+	
+	if err != nil {
+		log.Fatal(err)
+	}
+	
 	defer resp.Body.Close()
 	
 	var data []map[string]interface{}
